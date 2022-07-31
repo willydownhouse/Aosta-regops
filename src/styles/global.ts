@@ -35,4 +35,8 @@ export default createGlobalStyle`
     h6{
         font-size: 1.6rem;
     }
+
+    p{
+        font-size: 1.6rem;
+    }
 `;

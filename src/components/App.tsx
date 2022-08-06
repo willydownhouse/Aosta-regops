@@ -6,6 +6,7 @@ import Footer from './Footer';
 import Map from './Map';
 import Navbar from './Navbar';
 import { INotification } from '../interfaces/notification';
+import { useAuth0 } from '@auth0/auth0-react';
 
 function App() {
   const [notification, setNotification] = useState<INotification>({
@@ -13,6 +14,11 @@ function App() {
     type: 'notif',
   });
   const [showStreetMap, setShowStreetMap] = useState<boolean>(true);
+  const { user, isAuthenticated } = useAuth0();
+
+  console.log('user', user);
+  console.log('isLoggedIn:', isAuthenticated);
+
   return (
     <Container>
       <GlobalStyles />
@@ -20,6 +26,7 @@ function App() {
       <Navbar
         setShowStreetMap={setShowStreetMap}
         showStreetMap={showStreetMap}
+        setNotification={setNotification}
       />
       <Map isStreetMap={showStreetMap} />
       <Footer />

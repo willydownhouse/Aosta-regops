@@ -11,13 +11,18 @@ type MapProps = {
 
 function Map({ isStreetMap }: MapProps) {
   useEffect(() => {
-    console.log('show street map:', isStreetMap);
+    //console.log('show street map:', isStreetMap);
   });
 
   return (
     <SMap id="map">
       <MapContainer
-        style={{ height: '100%', width: '100%' }}
+        style={{
+          height: '100%',
+          width: '100%',
+          /* zIndex: 1, */
+          isolation: 'isolate',
+        }}
         center={[45.73378, 7.31233]}
         zoom={10}
         scrollWheelZoom

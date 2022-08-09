@@ -39,4 +39,8 @@ export default createGlobalStyle`
     p{
         font-size: 1.6rem;
     }
+
+    pre{
+        font-size: 1.6rem;
+    }
 `;

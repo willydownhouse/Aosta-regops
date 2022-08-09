@@ -5,6 +5,7 @@ import {
   displayErrorNotification,
   displayNotification,
 } from '../utils/displayNotifications';
+import { Button } from '../styles/utils';
 
 type LoginButtonProps = {
   setNotification: (val: INotification) => void;
@@ -28,9 +29,12 @@ const LoginButton = ({ setNotification }: LoginButtonProps) => {
   };
 
   return (
-    <button onClick={() => (isAuthenticated ? handleLogout() : handleLogin())}>
-      {isAuthenticated ? 'log out' : 'log in'}
-    </button>
+    <Button
+      $bgColor="transparent"
+      onClick={() => (isAuthenticated ? handleLogout() : handleLogin())}
+    >
+      {isAuthenticated ? 'sign out' : 'sign in/up'}
+    </Button>
   );
 };
 

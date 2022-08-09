@@ -8,6 +8,10 @@ export const SNavBar = styled.nav`
   display: flex;
   align-items: center;
   justify-content: space-between;
+
+  @media (max-width: 500px) {
+    padding: 0rem 0.5rem;
+  }
 `;
 
 export const StyledA = styled.span`

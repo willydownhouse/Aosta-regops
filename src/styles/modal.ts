@@ -22,6 +22,7 @@ export const Modal = styled.div<ModalProps>`
   transition: z-index 0.3s ease-in;
   transition: opacity 1s ease;
   padding: 2rem;
+  overflow: scroll;
 
   @media (max-width: 678px) {
     width: 90vw;

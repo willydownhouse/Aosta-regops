@@ -9,7 +9,8 @@ import {
   AUTH0_DOMAIN,
   REACT_APP_OFFLINE_API_KEY,
 } from '../utils/config';
-import { Button, FlexWrapper } from '../styles/utils';
+import { FlexWrapper } from '../styles/utils';
+import { Button } from '../styles/buttons';
 
 type NavbarProps = {
   setShowStreetMap: (val: boolean) => void;

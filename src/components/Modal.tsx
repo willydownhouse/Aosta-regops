@@ -8,7 +8,7 @@ type ModalProps = {
 
 const ModalComponent: React.FC<ModalProps> = ({ $open, children }) => {
   return (
-    <Modal className="obModal" $open={$open}>
+    <Modal className="modal" $open={$open}>
       {children}
     </Modal>
   );

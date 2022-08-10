@@ -5,7 +5,7 @@ import {
   displayErrorNotification,
   displayNotification,
 } from '../utils/displayNotifications';
-import { Button } from '../styles/utils';
+import { Button } from '../styles/buttons';
 
 type LoginButtonProps = {
   setNotification: (val: INotification) => void;

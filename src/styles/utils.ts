@@ -18,45 +18,26 @@ export const FlexWrapper = styled.div<FlexWrapperProps>`
   justify-content: ${props => (props.$justify ? props.$justify : 'center')};
 `;
 
-type ButtonProps = {
-  $bgColor?: string;
-  $text_color?: string;
+type TextInputProps = {
+  $error?: any;
 };
 
-export const Button = styled.button<ButtonProps>`
-  padding: 0.6rem 1.5rem;
-  background-color: ${props => props.$bgColor || props.theme.bg_color};
-  color: ${props => props.$text_color || props.theme.text_color};
-  cursor: pointer;
-  font-family: 'Roboto', sans-serif;
-  border: 1px solid ${props => props.$text_color || props.theme.text_color};
-  border-radius: 3px;
-  transition: all 0.3s ease;
-  font-size: 1.4rem;
-
-  &:hover {
-    transform: scale(1.1);
-    color: white;
-    border: 1px solid white;
-  }
-
-  @media (max-width: 400px) {
-    padding: 0.4rem 1.1rem;
-    font-size: 1rem;
-  }
-`;
-
-Button.defaultProps = {
-  theme: {
-    text_color: '#cecece',
-    bg_color: '#044157',
-  },
-};
-
-export const TextInput = styled.input`
+export const TextInput = styled.input<TextInputProps>`
   height: 3rem;
   font-family: 'Roboto', sans-serif;
   margin-bottom: 0.5rem;
   outline: none;
   font-size: 1.4rem;
+  border: ${props => `1px solid ${props.$error ? 'red' : '#999'}`};
+  border-radius: 3px;
+`;
+
+export const InputLabel = styled.label`
+  font-size: 1.4rem;
+  display: block;
+  margin-bottom: 0.5rem;
+`;
+
+export const ErrorText = styled.p`
+  color: red;
 `;

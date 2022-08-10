@@ -1,8 +1,8 @@
 import styled from 'styled-components';
 
 export const SNavBar = styled.nav`
-  background-color: #044157;
-  color: #f4f4f4;
+  background-color: ${props => props.theme.colors.bg_nav};
+  color: ${props => props.theme.colors.text_nav};
   height: 10%;
   padding: 0 3rem;
   display: flex;
@@ -17,6 +17,6 @@ export const SNavBar = styled.nav`
 export const StyledA = styled.span`
   display: inline-block;
   padding: 0.6rem 1rem;
-  background-color: rgb(299, 119, 4);
+  background-color: ${props => props.theme.colors.logo_a};
   border-radius: 5px;
 `;

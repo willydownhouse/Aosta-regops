@@ -7,6 +7,7 @@ import Map from './Map';
 import Navbar from './Navbar';
 import { INotification } from '../interfaces/notification';
 import { useAuth0 } from '@auth0/auth0-react';
+import Theme from './Theme';
 
 import ModalComponent from './Modal';
 import NewObForm from './NewObForm';
@@ -31,7 +32,7 @@ function App() {
   // useEffect(() => {
   //   function displayModal(e: MouseEvent) {
   //     console.log('clikc');
-  //     if (!(e.target as HTMLElement).classList.contains('obModal')) {
+  //     if (!(e.target as HTMLElement).classList.contains('modal')) {
   //       setObModalOpen(false);
   //     }
   //   }
@@ -47,7 +48,7 @@ function App() {
   // }, [obModalOpen]);
 
   return (
-    <>
+    <Theme>
       <Container>
         <GlobalStyles />
         <Notification message={notification.message} type={notification.type} />
@@ -64,7 +65,7 @@ function App() {
           <NewObForm />
         </ModalComponent>
       </Container>
-    </>
+    </Theme>
   );
 }
 

@@ -37,6 +37,10 @@ export default createGlobalStyle`
     }
 
     p{
+        font-size: 1.4rem;
+    }
+
+    label{
         font-size: 1.6rem;
     }
 

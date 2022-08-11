@@ -1,16 +1,17 @@
-import React, { Children } from 'react';
+import React from 'react';
 import { Field, FieldInputProps, FormikState } from 'formik';
-import { StyledComponent } from '@emotion/styled';
-import { ErrorText, InputLabel, TextInput } from '../styles/utils';
+import { ErrorText, InputLabel, MyInputWrap, TextInput } from '../styles/utils';
 
 type MyInputProps = {
   name: string;
+  extra_class?: string;
+  placeholder?: string;
 };
 
-function MyInput({ name }: MyInputProps) {
+function MyInput({ name, extra_class, placeholder }: MyInputProps) {
   return (
-    <div>
-      <InputLabel>{name}</InputLabel>
+    <MyInputWrap className={extra_class}>
+      <InputLabel>{`${!placeholder ? modifyInputLabel(name) : ''}`}</InputLabel>
       <Field name={name}>
         {({
           field,
@@ -21,7 +22,11 @@ function MyInput({ name }: MyInputProps) {
         }) => {
           return (
             <>
-              <TextInput $error={touched[name] && errors[name]} {...field} />
+              <TextInput
+                placeholder={placeholder}
+                $error={touched[name] && errors[name]}
+                {...field}
+              />
               {touched[name] && errors[name] ? (
                 <ErrorText>{`${errors[name]}`}</ErrorText>
               ) : null}
@@ -29,27 +34,12 @@ function MyInput({ name }: MyInputProps) {
           );
         }}
       </Field>
-    </div>
+    </MyInputWrap>
   );
 }
 
-export default MyInput;
-// function MyInput({
-//   name,
-//   type,
-//   value,
-//   touched,
-//   error,
-//   as,
-//   component,
-// }: MyInputProps) {
-//   return (
-//     <div>
-//       <InputLabel>{name}</InputLabel>
-//       <Field component={component} name={name} value={value} type={type} />
-//       {touched && error ? <ErrorText>{error}</ErrorText> : null}
-//     </div>
-//   );
-// }
+function modifyInputLabel(name: string) {
+  return name.slice(0, 1).toUpperCase() + name.slice(1).replace('_', ' ');
+}
 
-// export default MyInput;
+export default MyInput;

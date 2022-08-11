@@ -9,7 +9,7 @@ export default createGlobalStyle`
     html{
         font-size: 62.5%;
         font-family: 'Roboto', sans-serif;
-        color: #111;
+        /* color: #111; */
     }
 
     h1{
@@ -34,17 +34,39 @@ export default createGlobalStyle`
 
     h6{
         font-size: 1.6rem;
+        margin-right: 1rem;
     }
 
     p{
         font-size: 1.4rem;
+        margin-right: 1rem;
+        
     }
 
     label{
         font-size: 1.6rem;
+        margin-right: 1rem;
     }
 
     pre{
         font-size: 1.6rem;
+    }
+
+    div .grid-top-row{
+        grid-column: 1/4;
+    }
+
+    div .snow-tested{
+        grid-column: 1/2;
+        /* grid-row: 6/7 */
+    }
+
+    div .result{
+        grid-column: 2/3;
+        /* grid-row: 6/7 */
+    }
+
+    input{
+        margin-right: 1rem;
     }
 `;

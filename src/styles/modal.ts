@@ -11,7 +11,7 @@ export const Modal = styled.div<ModalProps>`
   transform: translate(-50%, -50%);
   z-index: ${props => (props.$open ? 5 : -10)};
   opacity: ${props => (props.$open ? 1 : 0)};
-  width: 75vw;
+  width: 60vw;
   height: 90vh;
   background-color: #f2f2f2;
   border-radius: 3px;
@@ -23,6 +23,10 @@ export const Modal = styled.div<ModalProps>`
   transition: opacity 1s ease;
   padding: 2rem;
   overflow: scroll;
+
+  @media (max-width: 1200px) {
+    width: 75vw;
+  }
 
   @media (max-width: 678px) {
     width: 90vw;

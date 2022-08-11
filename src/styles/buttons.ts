@@ -3,6 +3,9 @@ import styled from 'styled-components';
 type ButtonProps = {
   $bgColor?: string;
   $text_color?: string;
+  $mb?: number;
+  $ml?: number;
+  $mr?: number;
 };
 
 export const Button = styled.button<ButtonProps>`
@@ -16,6 +19,9 @@ export const Button = styled.button<ButtonProps>`
   border-radius: 3px;
   transition: all 0.3s ease;
   font-size: 1.4rem;
+  margin-bottom: ${props => `${props.$mb}rem` || 'none'};
+  margin-left: ${props => `${props.$ml}rem` || 'none'};
+  margin-right: ${props => `${props.$mr}rem` || 'none'};
 
   &:hover {
     transform: scale(1.1);

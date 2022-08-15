@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { MutableRefObject, useEffect, useState, useRef } from 'react';
 import GlobalStyles from '../styles/global';
 import Notification from './Notification';
 import { Container } from '../styles/utils';
@@ -17,35 +17,35 @@ function App() {
     message: '',
     type: 'notif',
   });
-  const [obModalOpen, setObModalOpen] = useState<boolean>(true);
+  const [obModalOpen, setObModalOpen] = useState<boolean>(false);
 
   const [showStreetMap, setShowStreetMap] = useState<boolean>(true);
   const { user, isAuthenticated } = useAuth0();
 
-  console.log('modal open:', obModalOpen);
+  /*  const ref = useRef() as MutableRefObject<HTMLDivElement>; */
 
   useEffect(() => {
     console.log('user', user);
     console.log('isLoggedIn:', isAuthenticated);
-  }, []);
+  }, [user]);
 
-  // useEffect(() => {
-  //   function displayModal(e: MouseEvent) {
-  //     console.log('clikc');
-  //     if (!(e.target as HTMLElement).classList.contains('modal')) {
-  //       setObModalOpen(false);
-  //     }
-  //   }
-  //   if (!obModalOpen) return;
+  useEffect(() => {
+    function displayModal(e: MouseEvent) {
+      if ((e.target as HTMLElement).closest('.modal')) return;
 
-  //   document.body.addEventListener('click', displayModal, { capture: true });
+      setObModalOpen(false);
+    }
 
-  //   return () => {
-  //     document.body.removeEventListener('click', displayModal, {
-  //       capture: true,
-  //     });
-  //   };
-  // }, [obModalOpen]);
+    if (!obModalOpen) return;
+
+    document.body.addEventListener('click', displayModal, { capture: true });
+
+    return () => {
+      document.body.removeEventListener('click', displayModal, {
+        capture: true,
+      });
+    };
+  }, [obModalOpen]);
 
   return (
     <Theme>
@@ -62,7 +62,7 @@ function App() {
         <Map isStreetMap={showStreetMap} />
         <Footer />
         <ModalComponent $open={obModalOpen}>
-          <NewObForm />
+          <NewObForm setNotification={setNotification} />
         </ModalComponent>
       </Container>
     </Theme>

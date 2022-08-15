@@ -10,7 +10,7 @@ export const FormGrid = styled.div`
   height: 95%;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
-  grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr 3fr;
+  grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr 0.5fr 3fr;
   /* grid-gap: 1rem; */
 
   @media (max-width: 600px) {
@@ -55,7 +55,7 @@ export const TextInput = styled.input<TextInputProps>`
   font-family: 'Roboto', sans-serif;
   margin-bottom: 0.5rem;
   outline: none;
-  font-size: 1.4rem;
+  font-size: ${props => props.theme.input.font_size};
   border: ${props => `1px solid ${props.$error ? 'red' : '#999'}`};
   border-radius: 3px;
   margin-bottom: ${props => props.$mb || 'none'};
@@ -64,11 +64,24 @@ export const TextInput = styled.input<TextInputProps>`
 `;
 
 export const InputLabel = styled.label`
-  font-size: 1.4rem;
+  font-size: ${props => props.theme.input.label_font_size};
   display: block;
   margin-bottom: 0.5rem;
 `;
 
 export const ErrorText = styled.p`
   color: red;
+`;
+
+type TextAreaProps = {
+  $error: string | undefined;
+};
+
+export const TextArea = styled.textarea<TextAreaProps>`
+  width: 100%;
+  height: 100%;
+  font-family: ${props => props.theme.font.base};
+  font-size: ${props => props.theme.input.font_size};
+  padding: 0.5rem;
+  border: ${props => `1px solid ${props.$error ? 'red' : '#999'}`};
 `;

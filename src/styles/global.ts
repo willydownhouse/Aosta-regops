@@ -66,6 +66,11 @@ export default createGlobalStyle`
         /* grid-row: 6/7 */
     }
 
+    div .description{
+        grid-column: 1/4;
+        grid-row: 8/9
+    }
+
     input{
         margin-right: 1rem;
     }

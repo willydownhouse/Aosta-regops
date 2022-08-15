@@ -1,22 +1,19 @@
 import { Field } from 'formik';
 import React from 'react';
 import { ErrorText, FlexWrapper } from '../styles/utils';
+import { useTheme } from 'styled-components';
 
 type FormTypeSectionProps = {
   error: string | undefined;
 };
 
 function FormTypeSection({ error }: FormTypeSectionProps) {
-  const width =
-    window.innerWidth ||
-    document.documentElement.clientWidth ||
-    document.body.clientWidth;
+  const theme = useTheme();
 
-  console.log(width);
   return (
     <FlexWrapper $direction="column" className="grid-top-row">
       <FlexWrapper
-        $direction={width < 600 ? 'column' : 'row'}
+        $direction={theme.screenWidth < 600 ? 'column' : 'row'}
         $justify="center"
       >
         <FlexWrapper>

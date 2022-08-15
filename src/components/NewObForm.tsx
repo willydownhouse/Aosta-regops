@@ -1,131 +1,116 @@
 import React from 'react';
-import * as yup from 'yup';
-import { Formik, Form, Field } from 'formik';
-import {
-  ErrorText,
-  FlexWrapper,
-  FormGrid,
-  InputLabel,
-  TextInput,
-} from '../styles/utils';
-
+import { Formik, Form } from 'formik';
+import { FlexWrapper, FormGrid } from '../styles/utils';
 import MyInput from './MyInput';
 import { Button } from '../styles/buttons';
 import FormTypeSection from './FormTypeSection';
+import FormDescriptionSection from './FormDescriptionSection';
+import FormSnowTests from './FormSnowTests';
+import { initialValues, validationSchema } from '../utils/validationSchema';
+import { displayNotification } from '../utils/displayNotifications';
+import { INotification } from '../interfaces/notification';
 
-const initialValues = {
-  type: [],
-  valley: '',
-  zone: '',
-  lat: '',
-  long: '',
-  description: '',
-  altitude: '',
-  aspect: '',
-  temperature: '',
-  weather: '',
-  avalance_danger: '',
-  snow_cover: '',
-
-  // photos, snow_tested, snow_tests
+type NewObFormProps = {
+  setNotification: (val: INotification) => void;
 };
 
-const validationSchema = yup.object({
-  type: yup
-    .array()
-    .min(1, 'choose your observation type please')
-    .max(1, 'please choose only one type'),
-  valley: yup.string().required('Valley is required'),
-  zone: yup.string().required('Zone is required'),
-  lat: yup.number().typeError('must be a number').required('lat is required'),
-  long: yup.number().typeError('must be a number').required('long is required'),
-  aspect: yup.string().required('Aspect is required'),
-  weather: yup.string().required('Weather is required'),
-  altitude: yup
-    .number()
-    .typeError('must be a number')
-    .required('altitude is required'),
-  temperature: yup
-    .number()
-    .typeError('must be a number')
-    .min(-50)
-    .max(50)
-    .required('temperature is required'),
-  avalance_danger: yup
-    .number()
-    .typeError('must be a number')
-    .min(1, 'must be between 1-5')
-    .max(5, 'must be between 1-5')
-    .required('avalance danger is required'),
-  snow_cover: yup
-    .number()
-    .min(0)
-    .max(500)
-    .typeError('must be a number')
-    .required('snow cover is required (cm)'),
-});
-
-function NewObForm() {
+function NewObForm({ setNotification }: NewObFormProps) {
   return (
     <Formik
       initialValues={initialValues}
       validationSchema={validationSchema}
-      onSubmit={(values, { resetForm }) => {
+      onSubmit={(values, { resetForm, setFieldValue }) => {
         console.log('FROM SUBMIT:');
         console.log(values);
+        // resetForm();
+        // setFieldValue('snow_tests', []);
       }}
     >
-      {({ values, errors, touched, dirty, isValid }) => (
-        <Form style={{ height: '100%' }}>
-          <FormGrid>
-            <FormTypeSection error={errors.type as string} />
+      {({ values, errors, touched, isValid, setFieldValue }) => {
+        function handleAddTestClick() {
+          if (!values.test_result || values.snow_tested.length !== 1) {
+            return displayNotification(
+              'test name and result fields are required',
+              setNotification
+            );
+          }
 
-            <MyInput name="valley" />
-            <MyInput name="zone" />
+          values.snow_tests.push({
+            name: values.snow_tested[0],
+            result: values.test_result as string,
+          });
 
-            <MyInput name="aspect" />
-            <MyInput name="temperature" />
-            <MyInput name="avalance_danger" />
-            <MyInput name="snow_cover" />
-            <MyInput name="altitude" />
-            <MyInput name="weather" />
+          setFieldValue('test_result', '');
+          setFieldValue('snow_tested', []);
+        }
 
-            <FlexWrapper className="snow-tested">
-              <FlexWrapper $width={40}>
-                <p>Snow tests</p>
+        return (
+          <Form style={{ height: '100%' }}>
+            <FormGrid>
+              <FormTypeSection error={errors.type as string} />
+
+              <MyInput name="valley" />
+              <MyInput name="zone" />
+              <MyInput name="aspect" />
+              <MyInput name="temperature" />
+              <MyInput name="avalance_danger" />
+              <MyInput name="snow_cover" />
+              <MyInput name="altitude" />
+              <MyInput name="weather" />
+
+              <FormSnowTests
+                error={errors.snow_tested as string}
+                touched={touched.snow_tested}
+              />
+
+              <FlexWrapper className="result">
+                <MyInput name="test_result" placeholder="test result" />
               </FlexWrapper>
-
-              <FlexWrapper $width={60}>
-                <h6>ECT</h6>
-                <input type="checkbox" />
-                <h6>CT</h6>
-                <input type="checkbox" />
+              <FlexWrapper>
+                <Button $mr={2} onClick={handleAddTestClick} type="button">
+                  add test
+                </Button>
+                {values.snow_tests.length > 0 ? (
+                  <>
+                    <p>{values.snow_tests.length} tests</p>
+                    <button
+                      type="button"
+                      onClick={() => setFieldValue('snow_tests', [])}
+                    >
+                      x
+                    </button>
+                  </>
+                ) : null}
               </FlexWrapper>
-            </FlexWrapper>
-            <FlexWrapper className="result">
-              <MyInput name="test_result" placeholder="test result" />
-            </FlexWrapper>
-            <FlexWrapper className="grid-top-row" $align="start">
-              <MyInput name="lat" />
-              <MyInput name="long" />
-              <FlexWrapper $align="center">
-                <Button $ml={2}>Get coords</Button>
+              <FlexWrapper className="grid-top-row" $align="center">
+                <MyInput name="lat" />
+                <MyInput name="long" />
               </FlexWrapper>
-            </FlexWrapper>
-          </FormGrid>
+              <FlexWrapper>
+                <Button type="button" $mb={2} $mt={1}>
+                  click coords from map
+                </Button>
+              </FlexWrapper>
+              <FormDescriptionSection
+                error={errors.description}
+                touched={touched.description}
+                value={values.description}
+              />
+            </FormGrid>
 
-          <div style={{ height: '5%' }}>
-            <Button disabled={!isValid} type="submit">
-              Submit
-            </Button>
-          </div>
+            <div style={{ height: '5%' }}>
+              <Button $mt={2} disabled={!isValid} type="submit">
+                Submit
+              </Button>
+            </div>
 
-          <p>Values:</p>
-          <pre>{JSON.stringify(values, null, 2)}</pre>
-          <p>Errors:</p>
-          <pre>{JSON.stringify(errors, null, 2)}</pre>
-        </Form>
-      )}
+            {/* <p>Values:</p>
+            <pre>{JSON.stringify(values, null, 2)}</pre>
+            <p>Errors:</p>
+            <pre>{JSON.stringify(errors, null, 2)}</pre> */}
+          </Form>
+        );
+      }}
     </Formik>
   );
 }

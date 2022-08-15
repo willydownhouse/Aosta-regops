@@ -6,6 +6,8 @@ type ButtonProps = {
   $mb?: number;
   $ml?: number;
   $mr?: number;
+  $mt?: number;
+  $hover?: boolean;
 };
 
 export const Button = styled.button<ButtonProps>`
@@ -20,10 +22,12 @@ export const Button = styled.button<ButtonProps>`
   transition: all 0.3s ease;
   font-size: 1.4rem;
   margin-bottom: ${props => `${props.$mb}rem` || 'none'};
+  margin-top: ${props => `${props.$mt}rem` || 'none'};
   margin-left: ${props => `${props.$ml}rem` || 'none'};
   margin-right: ${props => `${props.$mr}rem` || 'none'};
 
   &:hover {
+    /* transform: ${props => `${props.$hover}` || 'scale(1.1)'}; */
     transform: scale(1.1);
     color: white;
     border: 1px solid white;

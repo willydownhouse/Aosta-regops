@@ -7,6 +7,7 @@ declare module 'styled-components' {
       error: string;
       bg_nav: string;
       bg_footer: string;
+      bg_modal: string;
       btn_main: string;
       btn_text_ligth: string;
       text_nav: string;

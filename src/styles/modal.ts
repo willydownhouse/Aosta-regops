@@ -13,7 +13,7 @@ export const Modal = styled.div<ModalProps>`
   opacity: ${props => (props.$open ? 1 : 0)};
   width: 60vw;
   height: 90vh;
-  background-color: #f2f2f2;
+  background-color: ${props => props.theme.colors.bg_modal};
   border-radius: 3px;
   box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px,
     rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px,

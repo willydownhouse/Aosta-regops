@@ -12,6 +12,7 @@ const theme: DefaultTheme = {
     error: 'red',
     bg_nav: '#044157',
     bg_footer: '#044157',
+    bg_modal: '#f8f8f8',
     btn_main: '#044157',
     btn_text_ligth: '#cecece',
     text_nav: '#f4f4f4',

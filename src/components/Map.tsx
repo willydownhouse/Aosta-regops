@@ -1,19 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import { SMap } from '../styles/map';
-import { MapContainer, Marker, Popup, TileLayer, useMap } from 'react-leaflet';
+import {
+  MapContainer,
+  Marker,
+  Popup,
+  TileLayer,
+  useMap,
+  useMapEvents,
+} from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 
 import Notification from './Notification';
 
 type MapProps = {
-  isStreetMap: boolean;
+  modalOpen: boolean;
 };
 
-function Map({ isStreetMap }: MapProps) {
-  useEffect(() => {
-    //console.log('show street map:', isStreetMap);
-  });
-
+function Map({ modalOpen }: MapProps) {
   return (
     <SMap id="map">
       <MapContainer
@@ -27,16 +30,62 @@ function Map({ isStreetMap }: MapProps) {
         zoom={10}
         scrollWheelZoom
       >
-        <TileLayer
-          attribution={isStreetMap ? streetMap.attribute : terrainMap.attribute}
-          url={isStreetMap ? streetMap.url : terrainMap.url}
-        />
+        <GetCoords modalOpen={modalOpen} />
+
+        <TileLayer attribution={streetMap.attribute} url={streetMap.url} />
       </MapContainer>
     </SMap>
   );
 }
 
 export default Map;
+
+type GetCoordsProps = {
+  modalOpen: boolean;
+};
+
+const GetCoords = ({ modalOpen }: GetCoordsProps) => {
+  const [position, setPosition] = useState<{
+    latitude: number;
+    longitude: number;
+  } | null>(null);
+
+  const map = useMapEvents({
+    click(e) {
+      const { lat, lng } = e.latlng;
+
+      console.log('lat:', lat, 'lng:', lng, 'modal open', modalOpen);
+
+      setPosition({
+        latitude: lat,
+        longitude: lng,
+      });
+      // map.mouseEventToLatLng(e)
+      // map.locate();
+      map.flyTo(e.latlng, map.getZoom());
+    },
+
+    /* locationfound(e) {
+        const { lat, lng } = e.latlng;
+        setPosition({
+          latitude: lat,
+          longitude: lng,
+        });
+        map.flyTo(e.latlng, map.getZoom());
+      }, */
+  });
+
+  if (modalOpen) return null;
+
+  return (
+    position && (
+      <Marker
+        position={[position.latitude, position.longitude]}
+        interactive={false}
+      />
+    )
+  );
+};
 
 const terrainMap = {
   attribute:

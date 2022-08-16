@@ -13,20 +13,12 @@ import { FlexWrapper } from '../styles/utils';
 import { Button } from '../styles/buttons';
 
 type NavbarProps = {
-  setShowStreetMap: (val: boolean) => void;
-  showStreetMap: boolean;
   setNotification: (val: INotification) => void;
   setObModalOpen: (val: boolean) => void;
   obModalOpen: boolean;
 };
 
-function Navbar({
-  setShowStreetMap,
-  showStreetMap,
-  setNotification,
-  setObModalOpen,
-  obModalOpen,
-}: NavbarProps) {
+function Navbar({ setNotification, setObModalOpen, obModalOpen }: NavbarProps) {
   const { isAuthenticated, user } = useAuth0();
 
   return (

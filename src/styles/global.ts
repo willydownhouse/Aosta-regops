@@ -54,21 +54,51 @@ export default createGlobalStyle`
 
     div .grid-top-row{
         grid-column: 1/4;
+
+        @media(max-width: 600px){
+            grid-column: 1/2;
+        }
     }
 
     div .snow-tested{
         grid-column: 1/2;
-        /* grid-row: 6/7 */
+        
+
+        @media(max-width: 600px){
+            grid-column: 1/2;
+        }
     }
 
     div .result{
         grid-column: 2/3;
-        /* grid-row: 6/7 */
+        
+
+        @media(max-width: 600px){
+            grid-column: 1/2;
+        }
     }
 
     div .description{
         grid-column: 1/4;
-        grid-row: 8/9
+        grid-row: 8/9;
+
+        @media(max-width: 600px){
+            grid-column: 1/2;
+            grid-row: auto;
+        }
+    }
+
+    
+
+    div .photo-inputs{
+        grid-column: 1/4;
+        grid-row: 9/10;
+
+        @media(max-width: 600px){
+            grid-column: 1/2;
+            grid-row: auto
+            
+        }
     }
 
     input{

@@ -24,12 +24,7 @@ export const validationSchema = yup.object({
     .min(-50)
     .max(50)
     .required('temperature is required'),
-  avalance_danger: yup
-    .number()
-    .typeError('must be a number')
-    .min(1, 'must be between 1-5')
-    .max(5, 'must be between 1-5')
-    .required('avalance danger is required'),
+  avalance_danger: yup.string().required('avalance danger is required'),
   snow_cover: yup
     .number()
     .min(0)
@@ -50,6 +45,7 @@ export const validationSchema = yup.object({
       then: yup.string().required('result is required for a test'),
     }),
   snow_tests: yup.array(),
+  photos: yup.array(),
 });
 
 export const initialValues: IObservation = {
@@ -60,12 +56,24 @@ export const initialValues: IObservation = {
   long: '',
   description: '',
   altitude: '',
-  aspect: '',
+  aspect: 'north',
   temperature: '',
   weather: '',
-  avalance_danger: '',
+  avalance_danger: '1',
   snow_cover: '',
   snow_tested: [],
   test_result: '',
   snow_tests: [],
+  photos: [],
 };
+
+export const aspects = [
+  'north',
+  'south',
+  'east',
+  'west',
+  'northeast',
+  'southeast',
+  'southwest',
+  'northwest',
+];

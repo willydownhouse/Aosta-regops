@@ -19,7 +19,6 @@ function App() {
   });
   const [obModalOpen, setObModalOpen] = useState<boolean>(false);
 
-  const [showStreetMap, setShowStreetMap] = useState<boolean>(true);
   const { user, isAuthenticated } = useAuth0();
 
   /*  const ref = useRef() as MutableRefObject<HTMLDivElement>; */
@@ -55,14 +54,15 @@ function App() {
         <Navbar
           obModalOpen={obModalOpen}
           setObModalOpen={setObModalOpen}
-          setShowStreetMap={setShowStreetMap}
-          showStreetMap={showStreetMap}
           setNotification={setNotification}
         />
-        <Map isStreetMap={showStreetMap} />
+        <Map modalOpen={obModalOpen} />
         <Footer />
         <ModalComponent $open={obModalOpen}>
-          <NewObForm setNotification={setNotification} />
+          <NewObForm
+            setNotification={setNotification}
+            setObModalOpen={setObModalOpen}
+          />
         </ModalComponent>
       </Container>
     </Theme>

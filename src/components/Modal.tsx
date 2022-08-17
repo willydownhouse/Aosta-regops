@@ -1,5 +1,5 @@
 import React, { MutableRefObject } from 'react';
-import { Modal } from '../styles/modal';
+import { Modal, Overlay } from '../styles/modal';
 
 type ModalProps = {
   $open: boolean;
@@ -9,9 +9,9 @@ type ModalProps = {
 
 const ModalComponent: React.FC<ModalProps> = ({ $open, children }) => {
   return (
-    <Modal className="modal" $open={$open}>
-      {children}
-    </Modal>
+    <Overlay $open={$open} className="overlay">
+      <Modal className="modal">{children}</Modal>
+    </Overlay>
   );
 };
 

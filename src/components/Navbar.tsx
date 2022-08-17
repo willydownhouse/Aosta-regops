@@ -2,7 +2,7 @@ import React from 'react';
 import { SNavBar, StyledA } from '../styles/navbar';
 import LoginButton from './LoginButton';
 import { useAuth0 } from '@auth0/auth0-react';
-import { INotification } from '../interfaces/notification';
+import { INotification } from '../interfaces/utils';
 import { displayErrorNotification } from '../utils/displayNotifications';
 import {
   AUTH0_CLIENT_ID,

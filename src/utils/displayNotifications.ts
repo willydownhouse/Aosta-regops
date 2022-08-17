@@ -1,4 +1,4 @@
-import { INotification } from '../interfaces/notification';
+import { INotification } from '../interfaces/utils';
 
 const displayTime = 3000;
 

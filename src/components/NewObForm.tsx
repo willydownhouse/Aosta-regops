@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Formik, Form, Field } from 'formik';
 import {
   FlexWrapper,
@@ -20,9 +20,10 @@ import {
   validationSchema,
 } from '../utils/validationSchema';
 import { displayNotification } from '../utils/displayNotifications';
-import { INotification } from '../interfaces/notification';
+import { INotification } from '../interfaces/utils';
 import { useTheme } from 'styled-components';
 import DropDown from './DropDown';
+import { useCoords } from '../context/coordsContext';
 
 type NewObFormProps = {
   setNotification: (val: INotification) => void;
@@ -30,6 +31,16 @@ type NewObFormProps = {
 };
 
 function NewObForm({ setNotification, setObModalOpen }: NewObFormProps) {
+  const { coords, setCoords } = useCoords();
+
+  console.log('coords', coords);
+
+  useEffect(() => {
+    if (!coords) return;
+
+    initialValues.lat = coords.latitude;
+    initialValues.long = coords.longitude;
+  }, [coords]);
   return (
     <Formik
       initialValues={initialValues}
@@ -39,6 +50,7 @@ function NewObForm({ setNotification, setObModalOpen }: NewObFormProps) {
         console.log(values);
         // resetForm();
         // setFieldValue('snow_tests', []);
+        setCoords(null);
       }}
     >
       {({
@@ -69,6 +81,11 @@ function NewObForm({ setNotification, setObModalOpen }: NewObFormProps) {
 
           setFieldValue('test_result', '');
           setFieldValue('snow_tested', []);
+        }
+
+        function handleClickCoordsFromMap() {
+          setCoords(null);
+          setObModalOpen(false);
         }
 
         return (
@@ -141,7 +158,7 @@ function NewObForm({ setNotification, setObModalOpen }: NewObFormProps) {
                 <MyInput name="long" />
               </FlexWrapper>
               <FlexWrapper>
-                <Button onClick={() => setObModalOpen(false)} type="button">
+                <Button onClick={handleClickCoordsFromMap} type="button">
                   click coords from map
                 </Button>
               </FlexWrapper>
@@ -177,10 +194,10 @@ function NewObForm({ setNotification, setObModalOpen }: NewObFormProps) {
               </Button>
             </div>
 
-            <p>Values:</p>
+            {/*  <p>Values:</p>
             <pre>{JSON.stringify(values, null, 2)}</pre>
             <p>Errors:</p>
-            <pre>{JSON.stringify(errors, null, 2)}</pre>
+            <pre>{JSON.stringify(errors, null, 2)}</pre> */}
           </Form>
         );
       }}

@@ -1,16 +1,13 @@
-import React, { MutableRefObject, useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import GlobalStyles from '../styles/global';
 import Notification from './Notification';
 import { Container } from '../styles/utils';
 import Footer from './Footer';
-import Map from './Map';
 import Navbar from './Navbar';
-import { INotification } from '../interfaces/notification';
+import { INotification } from '../interfaces/utils';
 import { useAuth0 } from '@auth0/auth0-react';
 import Theme from './Theme';
-
-import ModalComponent from './Modal';
-import NewObForm from './NewObForm';
+import Main from './Main';
 
 function App() {
   const [notification, setNotification] = useState<INotification>({
@@ -18,19 +15,16 @@ function App() {
     type: 'notif',
   });
   const [obModalOpen, setObModalOpen] = useState<boolean>(false);
-
   const { user, isAuthenticated } = useAuth0();
 
-  /*  const ref = useRef() as MutableRefObject<HTMLDivElement>; */
-
   useEffect(() => {
-    console.log('user', user);
+    //console.log('user', user);
     console.log('isLoggedIn:', isAuthenticated);
   }, [user]);
 
   useEffect(() => {
     function displayModal(e: MouseEvent) {
-      if ((e.target as HTMLElement).closest('.modal')) return;
+      if (!(e.target as HTMLElement).classList.contains('overlay')) return;
 
       setObModalOpen(false);
     }
@@ -56,14 +50,12 @@ function App() {
           setObModalOpen={setObModalOpen}
           setNotification={setNotification}
         />
-        <Map modalOpen={obModalOpen} />
+        <Main
+          obModalOpen={obModalOpen}
+          setNotification={setNotification}
+          setObModalOpen={setObModalOpen}
+        />
         <Footer />
-        <ModalComponent $open={obModalOpen}>
-          <NewObForm
-            setNotification={setNotification}
-            setObModalOpen={setObModalOpen}
-          />
-        </ModalComponent>
       </Container>
     </Theme>
   );

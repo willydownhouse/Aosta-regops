@@ -2,8 +2,8 @@ export interface IObservation {
   type: string[];
   valley: string;
   zone: string;
-  lat: string;
-  long: string;
+  lat: string | number;
+  long: string | number;
   description: string;
   altitude: string;
   aspect: string;

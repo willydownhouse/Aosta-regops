@@ -3,7 +3,7 @@ import styled from 'styled-components';
 export const SNavBar = styled.nav`
   background-color: ${props => props.theme.colors.bg_nav};
   color: ${props => props.theme.colors.text_nav};
-  height: 10%;
+  height: 10vh;
   padding: 0 3rem;
   display: flex;
   align-items: center;

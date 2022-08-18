@@ -3,13 +3,6 @@ import { SNavBar, StyledA } from '../styles/navbar';
 import LoginButton from './LoginButton';
 import { useAuth0 } from '@auth0/auth0-react';
 import { INotification } from '../interfaces/utils';
-import { displayErrorNotification } from '../utils/displayNotifications';
-import {
-  AUTH0_CLIENT_ID,
-  AUTH0_DOMAIN,
-  REACT_APP_OFFLINE_API_KEY,
-} from '../utils/config';
-import { FlexWrapper } from '../styles/utils';
 import { Button } from '../styles/buttons';
 
 type NavbarProps = {
@@ -45,26 +38,3 @@ function Navbar({ setNotification, setObModalOpen, obModalOpen }: NavbarProps) {
 }
 
 export default Navbar;
-
-// const testHealthRoute = async () => {
-//   try {
-//     const token = await getAccessTokenSilently({});
-
-//     const res = await fetch('http://localhost:3001/dev/health', {
-//       headers: {
-//         Authorization: `Bearer ${token}`,
-//         'x-api-key': `${REACT_APP_OFFLINE_API_KEY}`,
-//       },
-//     });
-
-//     if (!res.ok) {
-//       throw new Error(res.statusText);
-//     }
-
-//     const data = await res.json();
-//     console.log('data from request');
-//     console.log(data);
-//   } catch (err) {
-//     displayErrorNotification(err, setNotification);
-//   }
-// };

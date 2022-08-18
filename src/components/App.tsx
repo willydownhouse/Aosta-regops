@@ -14,7 +14,8 @@ function App() {
     message: '',
     type: 'notif',
   });
-  const [obModalOpen, setObModalOpen] = useState<boolean>(false);
+  const [obModalOpen, setObModalOpen] = useState<boolean>(true);
+  const [showForm, setShowForm] = useState<boolean>(false);
   const { user, isAuthenticated } = useAuth0();
 
   useEffect(() => {
@@ -22,11 +23,12 @@ function App() {
     console.log('isLoggedIn:', isAuthenticated);
   }, [user]);
 
-  useEffect(() => {
+  /* useEffect(() => {
     function displayModal(e: MouseEvent) {
       if (!(e.target as HTMLElement).classList.contains('overlay')) return;
 
       setObModalOpen(false);
+      setShowForm(true);
     }
 
     if (!obModalOpen) return;
@@ -38,7 +40,7 @@ function App() {
         capture: true,
       });
     };
-  }, [obModalOpen]);
+  }, [obModalOpen]); */
 
   return (
     <Theme>
@@ -51,6 +53,8 @@ function App() {
           setNotification={setNotification}
         />
         <Main
+          setShowForm={setShowForm}
+          showForm={showForm}
           obModalOpen={obModalOpen}
           setNotification={setNotification}
           setObModalOpen={setObModalOpen}

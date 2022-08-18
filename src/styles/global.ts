@@ -30,6 +30,7 @@ export default createGlobalStyle`
 
     h5{
         font-size: 2rem;
+        margin-bottom: .5rem;
     }
 
     h6{
@@ -99,6 +100,10 @@ export default createGlobalStyle`
             grid-row: auto
             
         }
+    }
+
+    div .container__slider.slider{
+        grid-column: 1/3;
     }
 
     input{

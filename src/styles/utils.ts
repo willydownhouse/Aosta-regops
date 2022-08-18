@@ -19,6 +19,15 @@ export const FormGrid = styled.div`
   }
 `;
 
+export const ObGrid = styled.div`
+  display: grid;
+  grid-template-columns: 1fr;
+
+  @media (max-width: 600px) {
+    grid-template-columns: 1fr;
+  }
+`;
+
 type FlexWrapperProps = {
   $width?: number;
   $height?: number;

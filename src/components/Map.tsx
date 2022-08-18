@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { SMap } from '../styles/map';
 import L from 'leaflet';
 import {
@@ -7,6 +7,7 @@ import {
   Popup,
   TileLayer,
   useMap,
+  useMapEvent,
   useMapEvents,
 } from 'react-leaflet';
 import { streetMap } from '../utils/map';
@@ -14,11 +15,21 @@ import GetCoords from './GetCoords';
 import { Icon } from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 
+import { useQuery } from '@tanstack/react-query';
+import { useAuth0 } from '@auth0/auth0-react';
+import { fetchObs } from '../api';
+import { IObservation, IServerOb } from '../interfaces/observation';
+import Observation from './Observation';
+import ModalComponent from './Modal';
+
 type MapProps = {
   modalOpen: boolean;
+  setModalOpen: (val: boolean) => void;
+  setShowForm: (val: boolean) => void;
+  data: IServerOb[];
 };
 
-function Map() {
+function Map({ modalOpen, setModalOpen, data, setShowForm }: MapProps) {
   return (
     <SMap id="map">
       <MapContainer
@@ -31,7 +42,7 @@ function Map() {
         zoom={10}
         scrollWheelZoom
       >
-        <GetCoords>
+        {/* <GetCoords>
           {position => (
             <Marker position={[position.latitude, position.longitude]}>
               <Popup>
@@ -39,7 +50,23 @@ function Map() {
               </Popup>
             </Marker>
           )}
-        </GetCoords>
+        </GetCoords> */}
+
+        {data.map(ob => {
+          return (
+            <Marker
+              key={ob.id}
+              position={[ob.coords.lat, ob.coords.long]}
+              eventHandlers={{
+                click: e => {
+                  console.log(e);
+                  setModalOpen(true);
+                  setShowForm(false);
+                },
+              }}
+            />
+          );
+        })}
 
         <TileLayer attribution={streetMap.attribute} url={streetMap.url} />
       </MapContainer>

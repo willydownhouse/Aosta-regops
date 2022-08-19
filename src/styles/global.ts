@@ -26,6 +26,7 @@ export default createGlobalStyle`
 
     h4{
         font-size: 2.5rem;
+        margin-bottom: .5rem;
     }
 
     h5{
@@ -36,11 +37,12 @@ export default createGlobalStyle`
     h6{
         font-size: 1.6rem;
         margin-right: 1rem;
+        margin-bottom: .5rem;
     }
 
     p{
         font-size: 1.4rem;
-        margin-right: 1rem;
+        /* margin-right: 1rem; */
         
     }
 
@@ -102,8 +104,9 @@ export default createGlobalStyle`
         }
     }
 
-    div .container__slider.slider{
+    div .ob_details_title{
         grid-column: 1/3;
+        
     }
 
     input{

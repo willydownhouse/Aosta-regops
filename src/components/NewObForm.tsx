@@ -77,6 +77,7 @@ function NewObForm({ setNotification, setObModalOpen }: NewObFormProps) {
           values.snow_tests.push({
             name: values.snow_tested[0],
             result: values.test_result as string,
+            stability: 'poor',
           });
 
           setFieldValue('test_result', '');

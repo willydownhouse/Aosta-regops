@@ -6,6 +6,9 @@ import NewObForm from './NewObForm';
 import Map from './Map';
 import { IServerOb } from '../interfaces/observation';
 import Observation from './Observation';
+import { useQuery } from '@tanstack/react-query';
+import { useAuth0 } from '@auth0/auth0-react';
+import { fetchObs } from '../api';
 
 type MainProps = {
   obModalOpen: boolean;
@@ -23,15 +26,17 @@ function Main({
   showForm,
 }: MainProps) {
   const [coords, setCoords] = useState<ICoords | null>(null);
+  const [selectedOb, setSelectedOb] = useState<IServerOb | null>(null);
+  const [obs, setObs] = useState<IServerOb[]>([]);
 
-  const [data, setData] = useState<IServerOb[]>([]);
+  //const { data } = useQuery(['obs'], fetchObs);
 
   useEffect(() => {
     const data = JSON.parse(localStorage.getItem('ob') as string);
     console.log('data:');
     console.log(data);
-
-    setData(data);
+    if (!data) return;
+    setObs(data);
 
     //localStorage.setItem('ob', JSON.stringify(data.data));
   }, []);
@@ -41,8 +46,9 @@ function Main({
       <Map
         modalOpen={obModalOpen}
         setModalOpen={setObModalOpen}
-        data={data}
+        data={obs}
         setShowForm={setShowForm}
+        setSelectedOb={setSelectedOb}
       />
       <ModalComponent $open={obModalOpen}>
         {showForm ? (
@@ -51,7 +57,7 @@ function Main({
             setObModalOpen={setObModalOpen}
           />
         ) : (
-          <Observation ob={data[0]} />
+          <Observation ob={selectedOb} />
         )}
       </ModalComponent>
     </CoordsProvider>

@@ -26,7 +26,7 @@ function FormTypeSection({ error }: FormTypeSectionProps) {
         </FlexWrapper>
         <FlexWrapper>
           <h6>Conditions report</h6>
-          <Field type="checkbox" value="consditions_report" name="type" />
+          <Field type="checkbox" value="conditions_report" name="type" />
         </FlexWrapper>
       </FlexWrapper>
 

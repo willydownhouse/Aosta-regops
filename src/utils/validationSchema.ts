@@ -65,6 +65,7 @@ export const initialValues: IObservation = {
   test_result: '',
   snow_tests: [],
   photos: [],
+  createdBy: '',
 };
 
 export const aspects = [

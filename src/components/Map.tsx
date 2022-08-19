@@ -27,9 +27,17 @@ type MapProps = {
   setModalOpen: (val: boolean) => void;
   setShowForm: (val: boolean) => void;
   data: IServerOb[];
+  setSelectedOb: (val: IServerOb) => void;
 };
 
-function Map({ modalOpen, setModalOpen, data, setShowForm }: MapProps) {
+function Map({
+  modalOpen,
+  setModalOpen,
+  data,
+  setShowForm,
+  setSelectedOb,
+}: MapProps) {
+  if (!data) return null;
   return (
     <SMap id="map">
       <MapContainer
@@ -47,7 +55,7 @@ function Map({ modalOpen, setModalOpen, data, setShowForm }: MapProps) {
             <Marker position={[position.latitude, position.longitude]}>
               <Popup>
                 <p>tere</p>
-              </Popup>
+              </Popup> 
             </Marker>
           )}
         </GetCoords> */}
@@ -59,9 +67,10 @@ function Map({ modalOpen, setModalOpen, data, setShowForm }: MapProps) {
               position={[ob.coords.lat, ob.coords.long]}
               eventHandlers={{
                 click: e => {
-                  console.log(e);
+                  console.log(ob.id);
                   setModalOpen(true);
                   setShowForm(false);
+                  setSelectedOb(ob);
                 },
               }}
             />

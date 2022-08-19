@@ -16,11 +16,13 @@ export interface IObservation {
   test_result: string;
   snow_tests: ISnowTest[];
   photos?: string[];
+  createdBy: string;
 }
 
 interface ISnowTest {
   name: string;
   result: string;
+  stability: string;
 }
 
 export interface IServerOb {
@@ -39,8 +41,14 @@ export interface IServerOb {
   weather: string;
   avalance_danger: string;
   snow_cover: string;
-  snow_tested: string[];
+  /* snow_tested: string[]; */
   test_result: string;
   snow_tests: ISnowTest[];
   photos: string[];
+  createdAt: string;
+  updatedAt: string;
+  createdBy: string;
+  slope_angle: string;
+  wind_speed: string;
+  wind_direction: string;
 }

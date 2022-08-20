@@ -21,6 +21,7 @@ import { fetchObs } from '../api';
 import { IObservation, IServerOb } from '../interfaces/observation';
 import Observation from './Observation';
 import ModalComponent from './Modal';
+import { useTheme } from 'styled-components';
 
 type MapProps = {
   modalOpen: boolean;
@@ -30,6 +31,8 @@ type MapProps = {
   setSelectedOb: (val: IServerOb) => void;
 };
 
+L.Icon.Default.imagePath = 'img/';
+
 function Map({
   modalOpen,
   setModalOpen,
@@ -37,6 +40,9 @@ function Map({
   setShowForm,
   setSelectedOb,
 }: MapProps) {
+  const { isAuthenticated } = useAuth0();
+  const theme = useTheme();
+
   if (!data) return null;
   return (
     <SMap id="map">
@@ -47,18 +53,20 @@ function Map({
           isolation: 'isolate',
         }}
         center={[45.73378, 7.31233]}
-        zoom={10}
+        zoom={theme.screenWidth < 600 ? 8 : 10}
         scrollWheelZoom
       >
-        {/* <GetCoords>
-          {position => (
-            <Marker position={[position.latitude, position.longitude]}>
-              <Popup>
-                <p>tere</p>
-              </Popup> 
-            </Marker>
-          )}
-        </GetCoords> */}
+        {isAuthenticated ? (
+          <GetCoords>
+            {position => (
+              <Marker position={[position.latitude, position.longitude]}>
+                <Popup>
+                  <p>tere</p>
+                </Popup>
+              </Marker>
+            )}
+          </GetCoords>
+        ) : null}
 
         {data.map(ob => {
           return (

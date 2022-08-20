@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { FaAngleRight, FaAngleLeft } from 'react-icons/fa';
 
 import './slider.css';
 
@@ -100,7 +101,7 @@ function Slider({ children, extra_class }: Props) {
           slideNext();
         }}
       >
-        {'>'}
+        <FaAngleRight />
       </button>
       <button
         className="slider__btn-prev"
@@ -109,7 +110,7 @@ function Slider({ children, extra_class }: Props) {
           slidePrev();
         }}
       >
-        {'<'}
+        <FaAngleLeft />
       </button>
     </div>
   );

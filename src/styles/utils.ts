@@ -22,11 +22,13 @@ export const FormGrid = styled.div`
 export const ObGrid = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
-  /* grid-template-rows: 1fr 1fr 1fr 1fr 1fr; */
+  grid-gap: 1rem;
+  grid-template-rows: auto 3fr 3fr 3fr 3fr auto auto 1fr;
+  margin-bottom: 1rem;
 
   @media (max-width: 600px) {
     grid-template-columns: 1fr;
-    grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+    grid-template-rows: auto 3fr 3fr 3fr 3fr 3fr auto auto 2fr;
   }
 `;
 
@@ -38,6 +40,7 @@ type FlexWrapperProps = {
   $direction?: string;
   $pos?: boolean;
   $padding?: string;
+  $mb?: string;
 };
 
 export const FlexWrapper = styled.div<FlexWrapperProps>`
@@ -49,6 +52,7 @@ export const FlexWrapper = styled.div<FlexWrapperProps>`
   height: ${props => props.$height || '100%'};
   justify-content: ${props => props.$justify || 'start'};
   padding: ${props => props.$padding || 'none'};
+  margin-bottom: ${props => props.$mb || 'none'};
 `;
 
 export const MyInputWrap = styled.div`

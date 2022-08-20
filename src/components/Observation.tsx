@@ -1,12 +1,15 @@
 import React from 'react';
 import { IServerOb } from '../interfaces/observation';
+import { Button } from '../styles/buttons';
 import { FlexWrapper, ObGrid } from '../styles/utils';
 import Slider from './Slider';
 
 type ObservationProps = {
   ob: IServerOb | null;
+  setModalOpen: (val: boolean) => void;
+  setShowForm: (val: boolean) => void;
 };
-function Observation({ ob }: ObservationProps) {
+function Observation({ ob, setModalOpen, setShowForm }: ObservationProps) {
   if (!ob) return null;
 
   const type =
@@ -80,8 +83,12 @@ function Observation({ ob }: ObservationProps) {
             <strong>{ob.weather}</strong>
           </p>
         </FlexWrapper>
-        <FlexWrapper>
-          <label>snow tests:</label>
+        <FlexWrapper
+          $direction="column"
+          $align="start"
+          className="ob_details_snow_tests"
+        >
+          <label style={{ marginBottom: '1rem' }}>snow tests:</label>
 
           {ob.snow_tests.length === 0 ? (
             <p>
@@ -91,12 +98,12 @@ function Observation({ ob }: ObservationProps) {
             <>
               {ob.snow_tests.map(test => {
                 return (
-                  <FlexWrapper key={test.result}>
+                  <FlexWrapper key={test.result} $mb="0.3rem">
                     <label>{test.name}:</label>
-                    <p>
+                    <p style={{ marginRight: '1rem' }}>
                       <strong>{test.result}</strong>
                     </p>
-                    <p>stability:</p>
+                    <p style={{ marginRight: '0.5rem' }}>stability:</p>
                     <p>
                       <strong>{test.stability}</strong>
                     </p>
@@ -106,10 +113,14 @@ function Observation({ ob }: ObservationProps) {
             </>
           )}
         </FlexWrapper>
-        <FlexWrapper>
-          <label>description:</label>
+        <FlexWrapper
+          $direction="column"
+          $align="start"
+          className="ob_details_description"
+        >
+          <label style={{ marginBottom: '1rem' }}>description:</label>
           <p>
-            <strong>{ob.description}</strong>
+            <strong style={{ lineHeight: '1.5' }}>{ob.description}</strong>
           </p>
         </FlexWrapper>
         <FlexWrapper>
@@ -125,6 +136,15 @@ function Observation({ ob }: ObservationProps) {
           return <img key={image} src={image} alt={image} />;
         })}
       </Slider>
+
+      <Button
+        onClick={() => {
+          setModalOpen(false);
+          setShowForm(true);
+        }}
+      >
+        close
+      </Button>
     </>
   );
 }

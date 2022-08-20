@@ -57,7 +57,11 @@ function Main({
             setObModalOpen={setObModalOpen}
           />
         ) : (
-          <Observation ob={selectedOb} />
+          <Observation
+            ob={selectedOb}
+            setModalOpen={setObModalOpen}
+            setShowForm={setShowForm}
+          />
         )}
       </ModalComponent>
     </CoordsProvider>

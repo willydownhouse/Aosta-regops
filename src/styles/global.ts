@@ -41,7 +41,7 @@ export default createGlobalStyle`
     }
 
     p{
-        font-size: 1.4rem;
+        font-size: 1.6rem;
         /* margin-right: 1rem; */
         
     }
@@ -106,6 +106,36 @@ export default createGlobalStyle`
 
     div .ob_details_title{
         grid-column: 1/3;
+
+        @media(max-width: 600px){
+           margin-bottom: 2rem;
+            
+        }
+        
+        
+    }
+
+    div .ob_details_description{
+        grid-column: 1/3;
+        margin-bottom: 1rem;
+
+        @media(max-width: 600px){
+           margin-top: 3rem;
+          
+            
+        }
+
+    }
+
+    div .ob_details_snow_tests{
+        @media(max-width: 600px){
+            grid-column: 1/3;
+            grid-row: 8/9;
+            grid-row: auto;
+            margin-top: 1rem;
+            
+            
+        }
         
     }
 

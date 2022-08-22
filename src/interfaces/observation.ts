@@ -15,8 +15,15 @@ export interface IObservation {
   snow_tested: string[];
   test_result: string;
   snow_tests: ISnowTest[];
-  photos?: string[];
+  photos: File[] | undefined[];
   createdBy: string;
+  slope_angle: number;
+  wind_speed: number;
+  wind_direction: string;
+  coords?: {
+    lat: number;
+    long: number;
+  };
 }
 
 interface ISnowTest {
@@ -41,14 +48,14 @@ export interface IServerOb {
   weather: string;
   avalance_danger: string;
   snow_cover: string;
-  /* snow_tested: string[]; */
+  snow_tested: string[];
   test_result: string;
   snow_tests: ISnowTest[];
   photos: string[];
   createdAt: string;
   updatedAt: string;
   createdBy: string;
-  slope_angle: string;
-  wind_speed: string;
+  slope_angle: number;
+  wind_speed: number;
   wind_direction: string;
 }

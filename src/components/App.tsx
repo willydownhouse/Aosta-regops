@@ -14,7 +14,7 @@ function App() {
     message: '',
     type: 'notif',
   });
-  const [obModalOpen, setObModalOpen] = useState<boolean>(false);
+  const [obModalOpen, setObModalOpen] = useState<boolean>(true);
   const [showForm, setShowForm] = useState<boolean>(true);
   const { user, isAuthenticated } = useAuth0();
 
@@ -23,7 +23,7 @@ function App() {
     console.log('isLoggedIn:', isAuthenticated);
   }, [user]);
 
-  useEffect(() => {
+  /*  useEffect(() => {
     function displayModal(e: MouseEvent) {
       if (!(e.target as HTMLElement).classList.contains('overlay')) return;
 
@@ -40,7 +40,7 @@ function App() {
         capture: true,
       });
     };
-  }, [obModalOpen]);
+  }, [obModalOpen]); */
 
   return (
     <Theme>

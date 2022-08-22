@@ -10,12 +10,12 @@ export const FormGrid = styled.div`
   /* height: 95%; */
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
-  grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 4fr 3fr;
+  grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 4fr 3fr;
 
   @media (max-width: 600px) {
     height: auto;
     grid-template-columns: 1fr;
-    grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 0.5fr 0.5fr 0.5fr 1fr 0.5fr 4fr 4fr;
+    grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 0.5fr 0.5fr 0.5fr 1fr 1fr 1fr 1fr 1fr 1fr 0.5fr 4fr auto;
   }
 `;
 

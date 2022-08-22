@@ -65,6 +65,7 @@ export default createGlobalStyle`
 
     div .snow-tested{
         grid-column: 1/2;
+        grid-row: 8/9;
         
 
         @media(max-width: 600px){
@@ -74,16 +75,28 @@ export default createGlobalStyle`
 
     div .result{
         grid-column: 2/3;
+        grid-row: 9/10;
         
 
         @media(max-width: 600px){
             grid-column: 1/2;
+            
+        }
+    }
+
+    div .add-test-btn{
+        grid-column: 3/4;
+        grid-row: 8/9;
+
+        @media(max-width: 600px){
+            grid-column: 1/2;
+            grid-row: 10/11;
         }
     }
 
     div .description{
         grid-column: 1/4;
-        grid-row: 8/9;
+        grid-row: 9/10;
 
         @media(max-width: 600px){
             grid-column: 1/2;
@@ -95,7 +108,7 @@ export default createGlobalStyle`
 
     div .photo-inputs{
         grid-column: 1/4;
-        grid-row: 9/10;
+        grid-row: 10/11;
 
         @media(max-width: 600px){
             grid-column: 1/2;

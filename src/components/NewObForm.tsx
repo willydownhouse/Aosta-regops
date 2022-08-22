@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { ChangeEvent, useEffect, useState } from 'react';
 import { Formik, Form, Field } from 'formik';
+import { FaCloudUploadAlt } from 'react-icons/fa';
 import {
   FlexWrapper,
   FormGrid,
@@ -32,6 +33,7 @@ type NewObFormProps = {
 
 function NewObForm({ setNotification, setObModalOpen }: NewObFormProps) {
   const { coords, setCoords } = useCoords();
+  const [photoInputs, setPhotoInputs] = useState(0);
 
   console.log('coords', coords);
 
@@ -47,7 +49,7 @@ function NewObForm({ setNotification, setObModalOpen }: NewObFormProps) {
       validationSchema={validationSchema}
       onSubmit={(values, { resetForm, setFieldValue }) => {
         console.log('FROM SUBMIT:');
-        console.log(values);
+        console.log(values.photos);
         // resetForm();
         // setFieldValue('snow_tests', []);
         setCoords(null);
@@ -61,7 +63,33 @@ function NewObForm({ setNotification, setObModalOpen }: NewObFormProps) {
         setFieldValue,
         handleBlur,
         handleChange,
+        validateField,
       }) => {
+        function handlePhotoInputChange(
+          e: ChangeEvent<HTMLInputElement>,
+          i: number
+        ) {
+          console.log(e.target.files);
+          if (values.photos[i] && e.target.files?.length === 0) {
+            //values.photos.splice(i, 1);
+
+            values.photos[i] = undefined;
+
+            /* setPhotoInputs(photoInputs - 1); */
+            validateField('photos');
+            return;
+          }
+
+          if (!e.target.files || e.target.files?.length === 0) return;
+
+          const file = e.target.files[0];
+
+          values.photos[i] = file;
+          // ? (values.photos[i] = file)
+          // : values.photos.push(file as File);
+
+          validateField('photos');
+        }
         function handleAddTestClick() {
           if (
             !values.test_result ||
@@ -103,9 +131,11 @@ function NewObForm({ setNotification, setObModalOpen }: NewObFormProps) {
                 onChange={handleChange}
                 onBlur={handleBlur}
                 options={aspects}
+                error={errors.aspect}
+                touched={touched.aspect}
               />
+              <MyInput name="altitude" />
 
-              <MyInput name="temperature" />
               <MyInput name="snow_cover" />
               <DropDown
                 name="avalance_danger"
@@ -113,10 +143,41 @@ function NewObForm({ setNotification, setObModalOpen }: NewObFormProps) {
                 onBlur={handleBlur}
                 onChange={handleChange}
                 options={['1', '2', '3', '4', '5']}
+                error={errors.avalance_danger}
+                touched={touched.avalance_danger}
               />
 
-              <MyInput name="altitude" />
+              <MyInput name="temperature" />
               <MyInput name="weather" />
+
+              <DropDown
+                name="slope_angle"
+                label="Slope angle"
+                onChange={handleChange}
+                onBlur={handleBlur}
+                options={Array.from({ length: 90 }, (v, k) => k + 1)}
+                error={errors.slope_angle}
+                touched={touched.slope_angle}
+              />
+              <DropDown
+                name="wind_direction"
+                label="Wind direction"
+                onChange={handleChange}
+                onBlur={handleBlur}
+                options={aspects}
+                error={errors.wind_direction}
+                touched={touched.wind_direction}
+              />
+              <DropDown
+                name="wind_speed"
+                label="Wind speed"
+                onChange={handleChange}
+                onBlur={handleBlur}
+                options={Array.from({ length: 50 }, (v, k) => k + 1)}
+                error={errors.wind_speed}
+                touched={touched.wind_speed}
+                placeholder="m/s"
+              />
 
               <FormSnowTests
                 error={errors.snow_tested as string}
@@ -126,7 +187,7 @@ function NewObForm({ setNotification, setObModalOpen }: NewObFormProps) {
               <FlexWrapper className="result">
                 <MyInput name="test_result" placeholder="test result" />
               </FlexWrapper>
-              <FlexWrapper $pos>
+              <FlexWrapper $pos className="add-test-btn">
                 <Button $mr={2} onClick={handleAddTestClick} type="button">
                   add test
                 </Button>
@@ -174,31 +235,67 @@ function NewObForm({ setNotification, setObModalOpen }: NewObFormProps) {
                 className="photo-inputs"
                 $align="start"
               >
-                <InputLabel>Photos</InputLabel>
-                <FlexWrapper
-                  $direction="column"
-                  $align="start"
-                  $justify="space-around"
+                <Button
+                  $mt={2}
+                  $mb={2}
+                  type="button"
+                  onClick={() => {
+                    if (photoInputs === 5) {
+                      return;
+                    } else {
+                      setPhotoInputs(photoInputs + 1);
+                    }
+                  }}
                 >
-                  <input name="photos" type={'file'} />
-                  <input name="photos" type={'file'} />
-                  <input name="photos" type={'file'} />
-                  <input name="photos" type={'file'} />
-                  <input name="photos" type={'file'} />
-                </FlexWrapper>
+                  add photo
+                </Button>
+                {Array.from({ length: photoInputs }).map((el, i) => (
+                  <FlexWrapper key={i}>
+                    <label htmlFor={`${i}`}>
+                      {/* <FaCloudUploadAlt size={'3rem'} /> */}
+                      <span style={{ marginRight: '2rem' }}>upload</span>
+                      <span>{values.photos[i]?.name || ''}</span>
+                      <input
+                        style={{ display: 'none' }}
+                        id={`${i}`}
+                        type={'file'}
+                        name="photos"
+                        /* value={values.photos[i]?.name} */
+                        onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                          handlePhotoInputChange(e, i)
+                        }
+                      />
+                    </label>
+
+                    <Button
+                      type="button"
+                      onClick={() => {
+                        if (photoInputs === 0) return;
+
+                        values.photos?.splice(i, 1);
+                        setPhotoInputs(photoInputs - 1);
+                      }}
+                    >
+                      x
+                    </Button>
+                  </FlexWrapper>
+                ))}
               </FlexWrapper>
             </FormGrid>
 
-            <div style={{ height: '5%' }}>
-              <Button $mt={2} disabled={!isValid} type="submit">
+            <FlexWrapper style={{ height: '5%' }} $justify="space-between">
+              <Button $mt={2} $mb={2} disabled={!isValid} type="submit">
                 Submit
               </Button>
-            </div>
+              <Button type="button" $mt={2} $mb={2}>
+                close
+              </Button>
+            </FlexWrapper>
 
-            {/*  <p>Values:</p>
+            <p>Values:</p>
             <pre>{JSON.stringify(values, null, 2)}</pre>
             <p>Errors:</p>
-            <pre>{JSON.stringify(errors, null, 2)}</pre> */}
+            <pre>{JSON.stringify(errors, null, 2)}</pre>
           </Form>
         );
       }}

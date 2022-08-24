@@ -28,6 +28,9 @@ function Main({
   const [coords, setCoords] = useState<ICoords | null>(null);
   const [selectedOb, setSelectedOb] = useState<IServerOb | null>(null);
   const [obs, setObs] = useState<IServerOb[]>([]);
+  const [token, setToken] = useState<string>('');
+
+  const { getAccessTokenSilently } = useAuth0();
 
   //const { data } = useQuery(['obs'], fetchObs);
 
@@ -39,6 +42,12 @@ function Main({
     setObs(data);
 
     //localStorage.setItem('ob', JSON.stringify(data.data));
+  }, []);
+
+  useEffect(() => {
+    getAccessTokenSilently()
+      .then(res => setToken(res))
+      .catch(() => console.log('not logged in'));
   }, []);
 
   return (
@@ -53,6 +62,7 @@ function Main({
       <ModalComponent $open={obModalOpen}>
         {showForm ? (
           <NewObForm
+            token={token}
             setNotification={setNotification}
             setObModalOpen={setObModalOpen}
           />

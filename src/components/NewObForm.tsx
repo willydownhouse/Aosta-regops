@@ -1,5 +1,5 @@
 import React, { ChangeEvent, useEffect, useState } from 'react';
-import { Formik, Form, Field } from 'formik';
+import { Formik, Form, Field, FormikHelpers } from 'formik';
 import { FaCloudUploadAlt } from 'react-icons/fa';
 import {
   FlexWrapper,
@@ -21,23 +21,75 @@ import {
   validationSchema,
 } from '../utils/validationSchema';
 import { displayNotification } from '../utils/displayNotifications';
-import { INotification } from '../interfaces/utils';
+import { ICoords, INotification } from '../interfaces/utils';
 import { useTheme } from 'styled-components';
 import DropDown from './DropDown';
 import { useCoords } from '../context/coordsContext';
+import Theme from './Theme';
+import { createOb, fetchHealthRoute, uploadPhoto } from '../api';
+import { IObservation, IServerOb } from '../interfaces/observation';
+import { useMutation } from '@tanstack/react-query';
+import { useAuth0 } from '@auth0/auth0-react';
 
 type NewObFormProps = {
   setNotification: (val: INotification) => void;
   setObModalOpen: (val: boolean) => void;
+  token: string;
 };
 
-function NewObForm({ setNotification, setObModalOpen }: NewObFormProps) {
+function NewObForm({ setNotification, setObModalOpen, token }: NewObFormProps) {
   const { coords, setCoords } = useCoords();
   const [photoInputs, setPhotoInputs] = useState(0);
+  const theme = useTheme();
+  const { mutate, data } = useMutation((ob: IObservation) =>
+    createOb(ob, token)
+  );
+  const { user } = useAuth0();
+  useEffect(() => {
+    console.log('data from mutate:');
+    console.log(data);
+  }, [data]);
 
-  console.log('coords', coords);
+  async function handleSubmit(
+    values: IObservation,
+    { resetForm }: FormikHelpers<IObservation>
+  ) {
+    console.log('FORM VALUES');
+    console.log(values);
+
+    if (values.photos.some(val => !val)) {
+      return displayNotification(
+        'please choose file or remove unnecessary inputs',
+        setNotification
+      );
+    }
+
+    if (values.photos.length !== 0) {
+      const res = await uploadPhoto(values.photos as File[], token);
+
+      values.photos = res?.map(item => item.url) as string[];
+    }
+
+    values.createdBy = user?.nickname as string;
+    values.coords = {
+      lat: values.lat as number,
+      long: values.long as number,
+    };
+
+    console.log('values after uploading photos');
+    console.log(values);
+    mutate(values, {
+      onError: err => console.log('mutate err', err),
+      onSuccess: data => console.log('mutate success:', data),
+    });
+
+    // resetForm();
+    // setFieldValue('snow_tests', []);
+    setCoords(null);
+  }
 
   useEffect(() => {
+    console.log('coords', coords);
     if (!coords) return;
 
     initialValues.lat = coords.latitude;
@@ -47,13 +99,7 @@ function NewObForm({ setNotification, setObModalOpen }: NewObFormProps) {
     <Formik
       initialValues={initialValues}
       validationSchema={validationSchema}
-      onSubmit={(values, { resetForm, setFieldValue }) => {
-        console.log('FROM SUBMIT:');
-        console.log(values.photos);
-        // resetForm();
-        // setFieldValue('snow_tests', []);
-        setCoords(null);
-      }}
+      onSubmit={handleSubmit}
     >
       {({
         values,
@@ -64,18 +110,18 @@ function NewObForm({ setNotification, setObModalOpen }: NewObFormProps) {
         handleBlur,
         handleChange,
         validateField,
+        setFieldError,
       }) => {
         function handlePhotoInputChange(
           e: ChangeEvent<HTMLInputElement>,
           i: number
         ) {
           console.log(e.target.files);
-          if (values.photos[i] && e.target.files?.length === 0) {
-            //values.photos.splice(i, 1);
 
+          // when click cancel
+          if (values.photos[i] && e.target.files?.length === 0) {
             values.photos[i] = undefined;
 
-            /* setPhotoInputs(photoInputs - 1); */
             validateField('photos');
             return;
           }
@@ -85,8 +131,6 @@ function NewObForm({ setNotification, setObModalOpen }: NewObFormProps) {
           const file = e.target.files[0];
 
           values.photos[i] = file;
-          // ? (values.photos[i] = file)
-          // : values.photos.push(file as File);
 
           validateField('photos');
         }
@@ -115,6 +159,8 @@ function NewObForm({ setNotification, setObModalOpen }: NewObFormProps) {
         function handleClickCoordsFromMap() {
           setCoords(null);
           setObModalOpen(false);
+          setFieldError('lat', undefined);
+          setFieldError('long', undefined);
         }
 
         return (
@@ -242,6 +288,15 @@ function NewObForm({ setNotification, setObModalOpen }: NewObFormProps) {
                   onClick={() => {
                     if (photoInputs === 5) {
                       return;
+                    } else if (
+                      values.photos.length !== photoInputs ||
+                      values.photos.some(val => !val)
+                    ) {
+                      displayNotification(
+                        'please choose file first',
+                        setNotification
+                      );
+                      return;
                     } else {
                       setPhotoInputs(photoInputs + 1);
                     }
@@ -252,22 +307,26 @@ function NewObForm({ setNotification, setObModalOpen }: NewObFormProps) {
                 {Array.from({ length: photoInputs }).map((el, i) => (
                   <FlexWrapper key={i}>
                     <label htmlFor={`${i}`}>
-                      {/* <FaCloudUploadAlt size={'3rem'} /> */}
-                      <span style={{ marginRight: '2rem' }}>upload</span>
-                      <span>{values.photos[i]?.name || ''}</span>
-                      <input
-                        style={{ display: 'none' }}
-                        id={`${i}`}
-                        type={'file'}
-                        name="photos"
-                        /* value={values.photos[i]?.name} */
-                        onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                          handlePhotoInputChange(e, i)
-                        }
-                      />
+                      <FlexWrapper>
+                        <FaCloudUploadAlt
+                          size={'3rem'}
+                          style={{ color: theme.colors.btn_main }}
+                        />
+                        <span>{(values.photos[i] as File)?.name || ''}</span>
+                        <input
+                          style={{ display: 'none' }}
+                          id={`${i}`}
+                          type={'file'}
+                          name="photos"
+                          onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                            handlePhotoInputChange(e, i)
+                          }
+                          accept="image/*"
+                        />
+                      </FlexWrapper>
                     </label>
 
-                    <Button
+                    <XButton
                       type="button"
                       onClick={() => {
                         if (photoInputs === 0) return;
@@ -277,7 +336,7 @@ function NewObForm({ setNotification, setObModalOpen }: NewObFormProps) {
                       }}
                     >
                       x
-                    </Button>
+                    </XButton>
                   </FlexWrapper>
                 ))}
               </FlexWrapper>
@@ -287,7 +346,12 @@ function NewObForm({ setNotification, setObModalOpen }: NewObFormProps) {
               <Button $mt={2} $mb={2} disabled={!isValid} type="submit">
                 Submit
               </Button>
-              <Button type="button" $mt={2} $mb={2}>
+              <Button
+                onClick={() => setObModalOpen(false)}
+                type="button"
+                $mt={2}
+                $mb={2}
+              >
                 close
               </Button>
             </FlexWrapper>

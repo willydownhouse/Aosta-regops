@@ -15,7 +15,7 @@ export interface IObservation {
   snow_tested: string[];
   test_result: string;
   snow_tests: ISnowTest[];
-  photos: File[] | undefined[];
+  photos: File[] | undefined[] | string[];
   createdBy: string;
   slope_angle: number;
   wind_speed: number;

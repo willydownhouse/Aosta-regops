@@ -51,8 +51,8 @@ function NewObForm({ setNotification, setObModalOpen, token }: NewObFormProps) {
     values: IObservation,
     { resetForm }: FormikHelpers<IObservation>
   ) {
-    console.log('FORM VALUES');
-    console.log(values);
+    // console.log('FORM VALUES');
+    // console.log(values);
 
     if (values.photos.some(val => !val)) {
       return displayNotification(
@@ -73,27 +73,30 @@ function NewObForm({ setNotification, setObModalOpen, token }: NewObFormProps) {
       long: values.long as number,
     };
 
-    console.log('values after uploading photos');
-    console.log(values);
+    // console.log('values after uploading photos');
+    // console.log(values);
     mutate(values, {
       onError: err => console.log('mutate err', err),
       onSuccess: data => {
         console.log('mutate success:', data);
+        displayNotification(
+          'Thank you for the new observation',
+          setNotification
+        );
         queryClient.invalidateQueries(['obs']);
       },
     });
 
     // resetForm();
     // setFieldValue('snow_tests', []);
-    setCoords(null);
+    setCoords({ latitude: 0, longitude: 0 });
   }
 
   useEffect(() => {
     //console.log('coords', coords);
-    if (!coords) return;
-
-    initialValues.lat = coords.latitude;
-    initialValues.long = coords.longitude;
+    // if (!coords) return;
+    // initialValues.lat = coords.latitude;
+    // initialValues.long = coords.longitude;
   }, [coords]);
   return (
     <Formik
@@ -112,6 +115,9 @@ function NewObForm({ setNotification, setObModalOpen, token }: NewObFormProps) {
         validateField,
         setFieldError,
       }) => {
+        values.lat = coords.latitude;
+        values.long = coords.longitude;
+
         function handlePhotoInputChange(
           e: ChangeEvent<HTMLInputElement>,
           i: number
@@ -155,7 +161,7 @@ function NewObForm({ setNotification, setObModalOpen, token }: NewObFormProps) {
         }
 
         function handleClickCoordsFromMap() {
-          setCoords(null);
+          setCoords({ latitude: 0, longitude: 0 });
           setObModalOpen(false);
           setFieldError('lat', undefined);
           setFieldError('long', undefined);
@@ -358,10 +364,10 @@ function NewObForm({ setNotification, setObModalOpen, token }: NewObFormProps) {
               </Button>
             </FlexWrapper>
 
-            {/*  <p>Values:</p>
+            <p>Values:</p>
             <pre>{JSON.stringify(values, null, 2)}</pre>
             <p>Errors:</p>
-            <pre>{JSON.stringify(errors, null, 2)}</pre> */}
+            <pre>{JSON.stringify(errors, null, 2)}</pre>
           </Form>
         );
       }}

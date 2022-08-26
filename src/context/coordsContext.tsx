@@ -2,10 +2,10 @@ import { createContext, useContext } from 'react';
 import { ICoords } from '../interfaces/utils';
 
 const coordsContext = createContext<{
-  coords: ICoords | null;
-  setCoords: (val: ICoords | null) => void;
+  coords: ICoords;
+  setCoords: (val: ICoords) => void;
 }>({
-  coords: null,
+  coords: { latitude: 0, longitude: 0 },
   setCoords: () => 1,
 });
 

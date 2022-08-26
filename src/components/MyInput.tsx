@@ -8,6 +8,7 @@ type MyInputProps = {
   placeholder?: string;
   type?: string;
   valueFromProps?: number;
+  onChangeFromProps?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
 function MyInput({
@@ -38,7 +39,6 @@ function MyInput({
                 onBlur={onBlur}
                 onChange={onChange}
                 checked={checked}
-                multiple={multiple}
                 value={valueFromProps || value}
               />
 

@@ -25,7 +25,8 @@ function Main({
   setShowForm,
   showForm,
 }: MainProps) {
-  const [coords, setCoords] = useState<ICoords | null>(null);
+  //const [coords, setCoords] = useState<ICoords | null>(null);
+  const [coords, setCoords] = useState<ICoords>({ latitude: 0, longitude: 0 });
   const [selectedOb, setSelectedOb] = useState<IServerOb | null>(null);
   const [obs, setObs] = useState<IServerOb[]>([]);
   const [token, setToken] = useState<string>('');

@@ -12,7 +12,11 @@ type NavbarProps = {
 };
 
 function Navbar({ setNotification, setObModalOpen, obModalOpen }: NavbarProps) {
-  const { isAuthenticated, user } = useAuth0();
+  const { isAuthenticated } = useAuth0();
+
+  const handleNewObButtonClick = () => {
+    setObModalOpen(!obModalOpen);
+  };
 
   return (
     <SNavBar>
@@ -21,10 +25,7 @@ function Navbar({ setNotification, setObModalOpen, obModalOpen }: NavbarProps) {
       </h5>
       {isAuthenticated ? (
         <div>
-          <Button
-            onClick={() => setObModalOpen(!obModalOpen)}
-            $bgColor="transparent"
-          >
+          <Button onClick={handleNewObButtonClick} $bgColor="transparent">
             New observation
           </Button>
         </div>

@@ -7,15 +7,22 @@ type MyInputProps = {
   extra_class?: string;
   placeholder?: string;
   type?: string;
+  valueFromProps?: number;
 };
 
-function MyInput({ name, extra_class, placeholder, type }: MyInputProps) {
+function MyInput({
+  name,
+  extra_class,
+  placeholder,
+  type,
+  valueFromProps,
+}: MyInputProps) {
   return (
     <MyInputWrap className={extra_class}>
       <InputLabel>{`${!placeholder ? modifyInputLabel(name) : ''}`}</InputLabel>
       <Field name={name} as={type || 'text'}>
         {({
-          field,
+          field: { value, name, onBlur, onChange, checked, multiple },
           form: { errors, touched },
         }: {
           field: FieldInputProps<any>;
@@ -26,7 +33,13 @@ function MyInput({ name, extra_class, placeholder, type }: MyInputProps) {
               <TextInput
                 placeholder={placeholder}
                 $error={touched[name] && errors[name]}
-                {...field}
+                /* {...field} */
+                name={name}
+                onBlur={onBlur}
+                onChange={onChange}
+                checked={checked}
+                multiple={multiple}
+                value={valueFromProps || value}
               />
 
               {touched[name] && errors[name] ? (

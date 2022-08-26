@@ -31,6 +31,7 @@ import { useAuth0 } from '@auth0/auth0-react';
 type NewObFormProps = {
   setNotification: (val: INotification) => void;
   setObModalOpen: (val: boolean) => void;
+
   token: string;
 };
 
@@ -259,8 +260,12 @@ function NewObForm({ setNotification, setObModalOpen, token }: NewObFormProps) {
                 ) : null}
               </FlexWrapper>
               <FlexWrapper className="grid-top-row" $align="center">
-                <MyInput name="lat" extra_class="small-screen-padding" />
-                <MyInput name="long" />
+                <MyInput
+                  name="lat"
+                  extra_class="small-screen-padding"
+                  valueFromProps={coords?.latitude}
+                />
+                <MyInput name="long" valueFromProps={coords?.longitude} />
               </FlexWrapper>
               <FlexWrapper>
                 <Button onClick={handleClickCoordsFromMap} type="button">
@@ -353,7 +358,7 @@ function NewObForm({ setNotification, setObModalOpen, token }: NewObFormProps) {
               </Button>
             </FlexWrapper>
 
-            {/* <p>Values:</p>
+            {/*  <p>Values:</p>
             <pre>{JSON.stringify(values, null, 2)}</pre>
             <p>Errors:</p>
             <pre>{JSON.stringify(errors, null, 2)}</pre> */}

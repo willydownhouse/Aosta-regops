@@ -20,6 +20,7 @@ const GetCoords = ({ children }: GetCoordsProps) => {
         latitude: lat,
         longitude: lng,
       });
+
       map.flyTo(e.latlng, map.getZoom());
     },
   });

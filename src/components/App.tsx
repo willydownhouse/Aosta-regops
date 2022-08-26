@@ -19,10 +19,10 @@ function App() {
 
   //const { user } = useAuth0();
 
-  // useEffect(() => {
-  //   console.log('user');
-  //   console.log(user);
-  // }, [user]);
+  useEffect(() => {
+    // console.log('user');
+    // console.log(user);
+  }, []);
 
   useEffect(() => {
     function displayModal(e: MouseEvent) {

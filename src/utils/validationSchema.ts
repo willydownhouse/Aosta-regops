@@ -19,8 +19,16 @@ export const validationSchema = yup.object({
     .max(1, 'please choose only one type'),
   valley: yup.string().required('Valley is required'),
   zone: yup.string().required('Zone is required'),
-  lat: yup.number().typeError('must be a number').required('lat is required'),
-  long: yup.number().typeError('must be a number').required('long is required'),
+  lat: yup
+    .number()
+    .typeError('must be a number')
+    .required('lat is required')
+    .test('is zero?', 'lat cant be zero', val => val !== 0),
+  long: yup
+    .number()
+    .typeError('must be a number')
+    .required('long is required')
+    .test('is zero?', 'long cant be zero', val => val !== 0),
   aspect: yup.string().oneOf(aspects).required('Aspect is required'),
   weather: yup.string().required('Weather is required'),
   altitude: yup
@@ -79,8 +87,8 @@ export const initialValues: IObservation = {
   type: [],
   valley: '',
   zone: '',
-  lat: '',
-  long: '',
+  lat: 0,
+  long: 0,
   description: '',
   altitude: '',
   aspect: '',

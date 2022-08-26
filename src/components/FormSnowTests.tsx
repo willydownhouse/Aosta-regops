@@ -1,5 +1,5 @@
 import { Field } from 'formik';
-import React, { ChangeEvent } from 'react';
+import React from 'react';
 import { ErrorText, FlexWrapper } from '../styles/utils';
 
 type FormSnowTests = {

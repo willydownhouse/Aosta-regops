@@ -20,19 +20,8 @@ const GetCoords = ({ children }: GetCoordsProps) => {
         latitude: lat,
         longitude: lng,
       });
-      // map.mouseEventToLatLng(e)
-      // map.locate();
       map.flyTo(e.latlng, map.getZoom());
     },
-
-    /* locationfound(e) {
-          const { lat, lng } = e.latlng;
-          setPosition({
-            latitude: lat,
-            longitude: lng,
-          });
-          map.flyTo(e.latlng, map.getZoom());
-        }, */
   });
 
   return coords && children(coords);

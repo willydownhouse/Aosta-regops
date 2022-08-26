@@ -75,11 +75,12 @@ export default createGlobalStyle`
 
     div .result{
         grid-column: 2/3;
-        grid-row: 9/10;
+        grid-row: 8/9;
         
 
         @media(max-width: 600px){
             grid-column: 1/2;
+            grid-row: 9/10
             
         }
     }

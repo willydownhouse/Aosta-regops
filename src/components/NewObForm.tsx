@@ -1,14 +1,12 @@
 import React, { ChangeEvent, useEffect, useState } from 'react';
-import { Formik, Form, Field, FormikHelpers } from 'formik';
+import { Formik, Form, FormikHelpers } from 'formik';
 import { FaCloudUploadAlt } from 'react-icons/fa';
 import {
   FlexWrapper,
   FormGrid,
   HoverP,
-  InputLabel,
   TestHoverBox,
   TestHoverInfo,
-  TextInput,
 } from '../styles/utils';
 import MyInput from './MyInput';
 import { Button, XButton } from '../styles/buttons';
@@ -21,14 +19,13 @@ import {
   validationSchema,
 } from '../utils/validationSchema';
 import { displayNotification } from '../utils/displayNotifications';
-import { ICoords, INotification } from '../interfaces/utils';
+import { INotification } from '../interfaces/utils';
 import { useTheme } from 'styled-components';
 import DropDown from './DropDown';
 import { useCoords } from '../context/coordsContext';
-import Theme from './Theme';
-import { createOb, fetchHealthRoute, uploadPhoto } from '../api';
-import { IObservation, IServerOb } from '../interfaces/observation';
-import { useMutation } from '@tanstack/react-query';
+import { createOb, uploadPhoto } from '../api';
+import { IObservation } from '../interfaces/observation';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useAuth0 } from '@auth0/auth0-react';
 
 type NewObFormProps = {
@@ -41,14 +38,13 @@ function NewObForm({ setNotification, setObModalOpen, token }: NewObFormProps) {
   const { coords, setCoords } = useCoords();
   const [photoInputs, setPhotoInputs] = useState(0);
   const theme = useTheme();
-  const { mutate, data } = useMutation((ob: IObservation) =>
-    createOb(ob, token)
-  );
+  const queryClient = useQueryClient();
+  const { mutate } = useMutation((ob: IObservation) => createOb(ob, token));
   const { user } = useAuth0();
-  useEffect(() => {
-    console.log('data from mutate:');
-    console.log(data);
-  }, [data]);
+  // useEffect(() => {
+  //   console.log('data from mutate:');
+  //   console.log(data);
+  // }, [data]);
 
   async function handleSubmit(
     values: IObservation,
@@ -80,7 +76,10 @@ function NewObForm({ setNotification, setObModalOpen, token }: NewObFormProps) {
     console.log(values);
     mutate(values, {
       onError: err => console.log('mutate err', err),
-      onSuccess: data => console.log('mutate success:', data),
+      onSuccess: data => {
+        console.log('mutate success:', data);
+        queryClient.invalidateQueries(['obs']);
+      },
     });
 
     // resetForm();
@@ -89,7 +88,7 @@ function NewObForm({ setNotification, setObModalOpen, token }: NewObFormProps) {
   }
 
   useEffect(() => {
-    console.log('coords', coords);
+    //console.log('coords', coords);
     if (!coords) return;
 
     initialValues.lat = coords.latitude;
@@ -116,8 +115,6 @@ function NewObForm({ setNotification, setObModalOpen, token }: NewObFormProps) {
           e: ChangeEvent<HTMLInputElement>,
           i: number
         ) {
-          console.log(e.target.files);
-
           // when click cancel
           if (values.photos[i] && e.target.files?.length === 0) {
             values.photos[i] = undefined;
@@ -149,7 +146,7 @@ function NewObForm({ setNotification, setObModalOpen, token }: NewObFormProps) {
           values.snow_tests.push({
             name: values.snow_tested[0],
             result: values.test_result as string,
-            stability: 'poor',
+            stability: 'poor', //KORJAA!!!!
           });
 
           setFieldValue('test_result', '');
@@ -219,7 +216,7 @@ function NewObForm({ setNotification, setObModalOpen, token }: NewObFormProps) {
                 label="Wind speed"
                 onChange={handleChange}
                 onBlur={handleBlur}
-                options={Array.from({ length: 50 }, (v, k) => k + 1)}
+                options={Array.from({ length: 30 }, (v, k) => k + 1)}
                 error={errors.wind_speed}
                 touched={touched.wind_speed}
                 placeholder="m/s"
@@ -356,10 +353,10 @@ function NewObForm({ setNotification, setObModalOpen, token }: NewObFormProps) {
               </Button>
             </FlexWrapper>
 
-            <p>Values:</p>
+            {/* <p>Values:</p>
             <pre>{JSON.stringify(values, null, 2)}</pre>
             <p>Errors:</p>
-            <pre>{JSON.stringify(errors, null, 2)}</pre>
+            <pre>{JSON.stringify(errors, null, 2)}</pre> */}
           </Form>
         );
       }}

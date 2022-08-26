@@ -17,12 +17,12 @@ function App() {
   const [obModalOpen, setObModalOpen] = useState<boolean>(false);
   const [showForm, setShowForm] = useState<boolean>(true);
 
-  const { user } = useAuth0();
+  //const { user } = useAuth0();
 
-  useEffect(() => {
-    console.log('user');
-    console.log(user);
-  }, [user]);
+  // useEffect(() => {
+  //   console.log('user');
+  //   console.log(user);
+  // }, [user]);
 
   useEffect(() => {
     function displayModal(e: MouseEvent) {

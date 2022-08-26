@@ -32,17 +32,17 @@ function Main({
 
   const { getAccessTokenSilently } = useAuth0();
 
-  //const { data } = useQuery(['obs'], fetchObs);
+  const { data } = useQuery(['obs'], fetchObs);
 
   useEffect(() => {
-    const data = JSON.parse(localStorage.getItem('ob') as string);
+    //const data = JSON.parse(localStorage.getItem('ob') as string);
     console.log('data:');
     console.log(data);
     if (!data) return;
-    setObs(data);
+    setObs(data.data);
 
     //localStorage.setItem('ob', JSON.stringify(data.data));
-  }, []);
+  }, [data]);
 
   useEffect(() => {
     getAccessTokenSilently()
@@ -53,7 +53,6 @@ function Main({
   return (
     <CoordsProvider value={{ coords, setCoords }}>
       <Map
-        modalOpen={obModalOpen}
         setModalOpen={setObModalOpen}
         data={obs}
         setShowForm={setShowForm}

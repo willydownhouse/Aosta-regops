@@ -1,5 +1,4 @@
-import { resolve } from 'path';
-import { IObservation, IServerOb } from '../interfaces/observation';
+import { IObservation } from '../interfaces/observation';
 import { REACT_APP_AWS_API_URL, REACT_APP_AWS_API_KEY } from '../utils/config';
 
 export async function fetchHealthRoute(token: string) {

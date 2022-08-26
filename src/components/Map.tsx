@@ -1,30 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { SMap } from '../styles/map';
 import L from 'leaflet';
-import {
-  MapContainer,
-  Marker,
-  Popup,
-  TileLayer,
-  useMap,
-  useMapEvent,
-  useMapEvents,
-} from 'react-leaflet';
+import { MapContainer, Marker, Popup, TileLayer } from 'react-leaflet';
 import { streetMap } from '../utils/map';
 import GetCoords from './GetCoords';
-import { Icon } from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-
-import { useQuery } from '@tanstack/react-query';
 import { useAuth0 } from '@auth0/auth0-react';
-import { fetchObs } from '../api';
-import { IObservation, IServerOb } from '../interfaces/observation';
-import Observation from './Observation';
-import ModalComponent from './Modal';
+import { IServerOb } from '../interfaces/observation';
 import { useTheme } from 'styled-components';
 
 type MapProps = {
-  modalOpen: boolean;
   setModalOpen: (val: boolean) => void;
   setShowForm: (val: boolean) => void;
   data: IServerOb[];
@@ -33,13 +18,7 @@ type MapProps = {
 
 L.Icon.Default.imagePath = 'img/';
 
-function Map({
-  modalOpen,
-  setModalOpen,
-  data,
-  setShowForm,
-  setSelectedOb,
-}: MapProps) {
+function Map({ setModalOpen, data, setShowForm, setSelectedOb }: MapProps) {
   const { isAuthenticated } = useAuth0();
   const theme = useTheme();
 
@@ -74,8 +53,7 @@ function Map({
               key={ob.id}
               position={[ob.coords.lat, ob.coords.long]}
               eventHandlers={{
-                click: e => {
-                  console.log(ob.id);
+                click: () => {
                   setModalOpen(true);
                   setShowForm(false);
                   setSelectedOb(ob);

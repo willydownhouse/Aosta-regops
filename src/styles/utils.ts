@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import { Field } from 'formik';
 
 export const Container = styled.div`
   height: 100vh;
@@ -10,7 +9,7 @@ export const FormGrid = styled.div`
   /* height: 95%; */
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
-  grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 4fr 3fr;
+  grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 4fr 1fr auto;
 
   @media (max-width: 600px) {
     height: auto;
@@ -79,7 +78,7 @@ export const TextInput = styled.input<TextInputProps>`
   height: 3rem;
   font-family: 'Roboto', sans-serif;
   margin-bottom: 0.5rem;
-  outline: none;
+  /* outline: none; */
   font-size: ${props => props.theme.input.font_size};
   border: ${props => `1px solid ${props.$error ? 'red' : '#999'}`};
   border-radius: 3px;

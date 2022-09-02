@@ -364,10 +364,10 @@ function NewObForm({ setNotification, setObModalOpen, token }: NewObFormProps) {
               </Button>
             </FlexWrapper>
 
-            <p>Values:</p>
+            {/* <p>Values:</p>
             <pre>{JSON.stringify(values, null, 2)}</pre>
             <p>Errors:</p>
-            <pre>{JSON.stringify(errors, null, 2)}</pre>
+            <pre>{JSON.stringify(errors, null, 2)}</pre> */}
           </Form>
         );
       }}
